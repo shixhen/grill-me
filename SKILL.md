@@ -1,13 +1,13 @@
 ---
 name: grill-me
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking or uses trigger phrases such as 'grill'.
 ---
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+Interview the user relentlessly until you reach a shared understanding. Actively challenge the assumptions, necessity, soundness, and feasibility of the user's proposal. Identify potential risks, logical contradictions, unnecessary complexity, and alternatives. Do not simply agree with the user, and do not make decisions on their behalf.
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+Identify dependencies between decisions and work in rounds. In each round, ask only questions whose prerequisite decisions are already settled, prioritizing key decisions with high impact or high risk. Number each question, explain the key tradeoffs, and give a recommended answer with supporting reasons. Wait for the user's answers, then reassess settled and unresolved decisions and their dependencies, adjust subsequent questions, and challenge new risks or assumptions as needed.
 
-Format a round like so:
+Prefer available built-in question tools to display interactive question cards. Otherwise, use plain text in the following format:
 
 ```
 ❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
@@ -21,10 +21,8 @@ Format a round like so:
 ➡️ <your recommended answer>
 ```
 
-Word each question so "yes" accepts your recommended answer.
+Investigate objective facts yourself whenever possible: use the context or tools directly for simple lookups, and delegate complex investigations to sub-agents when necessary. Ask the user only for information you cannot find out yourself. While investigating, continue discussing unaffected questions, and wait until the findings are clear before asking questions that depend on them. Avoid irrelevant exploration.
 
-Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
+As long as any decisions, implementation details, edge cases, risks, or implicit assumptions remain unclear, you must keep asking questions. Do not end early because the process is taking too long, there are too many questions, or the plan is already detailed enough to implement.
 
-Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
-
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
+When all relevant questions have clear conclusions, all decision dependencies are resolved, and no unconfirmed implicit assumptions remain, summarize the final plan and ask the user to confirm it. Do not implement it before confirmation.
